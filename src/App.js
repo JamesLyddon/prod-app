@@ -1,5 +1,11 @@
+import Counter from "./components/Counter";
+
 function App() {
-  return <h1>Hello</h1>;
+  return (
+    <>
+      <Counter />
+    </>
+  );
 }
 
 export default App;
