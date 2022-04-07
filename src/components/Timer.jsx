@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
 export default function Timer() {
-  const [timer, setTimer] = useState(10000);
+  const [timer, setTimer] = useState(10);
   const [isRunning, setIsRunning] = useState(false);
+  const [timerComplete, setTimerComplete] = useState(false);
+
+  // initialise interval globally
+  let interval = null;
 
   useEffect(() => {
-    let interval = null;
-
     // time incrementer
-    if (isRunning) {
+    if (isRunning && timer !== 0) {
       interval = setInterval(() => {
-        setTimer((prevTime) => prevTime - 10);
-      }, 10);
+        setTimer((prevTime) => prevTime - 1);
+      }, 1000);
     } else {
       clearInterval(interval);
     }
@@ -21,6 +23,13 @@ export default function Timer() {
     return () => clearInterval(interval);
   }, [isRunning]);
 
+  useEffect(() => {
+    if (timer === 0) {
+      setIsRunning(false);
+      setTimerComplete(true);
+    }
+  }, [timer]);
+
   return (
     <Container>
       <Button onClick={() => setIsRunning(true)}>Start</Button>
@@ -28,6 +37,7 @@ export default function Timer() {
       <Button onClick={() => setIsRunning(true)}>Resume</Button>
       <Button onClick={() => setTimer(0)}>Clear</Button>
       <p>{timer}</p>
+      {timerComplete ? <p>Finished!</p> : ""}
     </Container>
   );
 }
